@@ -1,5 +1,4 @@
-const express = require("express");
-
+import express  from "express";
 const router = express.Router();
 
 //some api endpoints
@@ -8,4 +7,4 @@ router.get("/send",(req,res)=>{
 
 })
 
-module.exports = router;
+export default router;

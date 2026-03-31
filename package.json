@@ -1,0 +1,23 @@
+{
+  "name": "chatify-app",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000C\u0000H\u0000A\u0000T\u0000-\u0000S\u0000Y\u0000S\u0000T\u0000E\u0000M\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "build":"npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start":"npm run start --prefix backend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayuuxssh/CHAT-SYSTEM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ayuuxssh/CHAT-SYSTEM/issues"
+  },
+  "homepage": "https://github.com/ayuuxssh/CHAT-SYSTEM#readme"
+}
