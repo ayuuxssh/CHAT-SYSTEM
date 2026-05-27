@@ -3,11 +3,13 @@ import dotenv  from "dotenv";
 import path  from 'path';
 const app = express();
 
+
+import { connectDB } from "./lib/db.js";
 import authRoutes  from "./routes/auth.routes.js";
 import messageRoutes  from "./routes/message.routes.js";
-
 dotenv.config();
 const PORT =  process.env.PORT;
+connectDB();
 
 const __dirname = path.resolve();
 app.use(express.json());
