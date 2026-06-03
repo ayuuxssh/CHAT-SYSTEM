@@ -3,16 +3,17 @@ import express from "express";
 import path  from 'path';
 const app = express();
 
-
 import { connectDB } from "./lib/db.js";
+import cookieParser from "cookie-parser"
 import authRoutes  from "./routes/auth.routes.js";
 import messageRoutes  from "./routes/message.routes.js";
-
-const PORT =  process.env.PORT;
 connectDB();
+const PORT =  process.env.PORT;
 
 const __dirname = path.resolve();
+app.use(cookieParser());
 app.use(express.json());
+
 //for auth routes
 app.use("/api/auth",authRoutes);//classic use of routes
 //for implementing message routes
