@@ -1,6 +1,7 @@
 import "dotenv/config"
 import express from "express";
 import path  from 'path';
+import cors from "cors"
 const app = express();
 
 import { connectDB } from "./lib/db.js";
@@ -12,6 +13,7 @@ const PORT =  process.env.PORT;
 
 const __dirname = path.resolve();
 app.use(cookieParser());
+app.use(cors({origin:process.env.CLIENT_URL,credentials:true}));
 app.use(express.json());
 
 //for auth routes
