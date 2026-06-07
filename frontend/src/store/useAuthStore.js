@@ -7,6 +7,7 @@ authUser:null,
 isCheckingAuth:true,
 isSigningUp:false,
 islogin:false,
+isUpdating:false,
 
 checkAuth:async()=>{
     try {
@@ -64,5 +65,20 @@ logout: async()=>{
         console.log("Logout error:",error);
         
     }
+},
+updateProfile :async(data)=>{
+    set({isUpdating:true})
+try {
+    const res = await axiosInstance.put("/auth/update-profile",data);
+    set({authUser:res.data});
+    toast.success("Profile Upload Successfully");
+    
+} catch (error) {
+    console.log("Error in update profile",error);
+    toast.error(error.response.data.message);
+    
+}finally{
+    set({isUpdating:false})
+}
 }
 }))
