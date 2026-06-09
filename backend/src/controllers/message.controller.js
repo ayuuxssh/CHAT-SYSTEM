@@ -91,8 +91,9 @@ export const getChartPartners= async(req,res)=>{
         });
 
         const chatPartnerId = [...new Set(messages.map(msg=>{
+            return(
             msg.senderId.toString() === loggedInUserId.toString()?msg.receiverId.toString():msg.senderId.toString()
-        }))];
+        )}))];
 
         const chatPartner = await User.find({_id: {$in:chatPartnerId}}).select("-password");
 
