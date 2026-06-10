@@ -2,7 +2,7 @@ import "dotenv/config"
 import express from "express";
 import path  from 'path';
 import cors from "cors"
-const app = express();
+import {app,server} from "./lib/socket.js";
 
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser"
@@ -31,6 +31,6 @@ app.get((req,res)=>{
     res.sendFile(path.join(__dirname,"../frontend","dist","index.html"));
 })
 }
-app.listen((PORT),()=>{
+server.listen((PORT),()=>{
 console.log(`Application is runnnig  in ${PORT}`);
 })
