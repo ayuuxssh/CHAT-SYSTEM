@@ -24,12 +24,14 @@ app.use("/api/message",messageRoutes);
 
 //make ready for deployment
 
-if(process.env.NODE_ENV==="production")
-{
-    app.use(express.static(path.join(__dirname,"frontend","dist")));
-app.get("/{*any}",(req,res)=>{
-    res.sendFile(path.join(__dirname,"../frontend","dist","index.html"));
-})
+if (process.env.NODE_ENV === "production") {
+    const frontendPath = path.join(__dirname, "frontend", "dist");
+
+    app.use(express.static(frontendPath));
+
+    app.get("/{*any}", (req, res) => {
+        res.sendFile(path.join(frontendPath, "index.html"));
+    });
 }
 server.listen((PORT),()=>{
 console.log(`Application is runnnig  in ${PORT}`);
