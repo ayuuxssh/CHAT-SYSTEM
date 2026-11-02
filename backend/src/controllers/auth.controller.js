@@ -112,10 +112,19 @@ export const login = async(req,res)=>{
 
 // logout
 
-export const logout = async(_,res)=>{
- res.cookie("jwt","",{maxAge:0});
- res.status(200).json({message:"Loggedout"});
-}
+
+export const logout = async (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    path: "/",
+  });
+
+  return res.status(200).json({
+    message: "Logged out successfully",
+  });
+};
 
 
 // update
