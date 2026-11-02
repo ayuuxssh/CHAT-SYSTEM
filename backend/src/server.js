@@ -1,29 +1,44 @@
-import "dotenv/config"
+
+import "dotenv/config";
 import express from "express";
-import path  from 'path';
-import cors from "cors"
-import {app,server} from "./lib/socket.js";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
+import { app, server } from "./lib/socket.js";
 import { connectDB } from "./lib/db.js";
-import cookieParser from "cookie-parser"
-import authRoutes  from "./routes/auth.routes.js";
-import messageRoutes  from "./routes/message.routes.js";
-connectDB();
-const PORT =  process.env.PORT;
+import authRoutes from "./routes/auth.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
-const __dirname = path.resolve();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
+
 app.use(cookieParser());
-app.use(cors({origin:process.env.CLIENT_URL,credentials:true}));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-//for auth routes
-app.use("/api/auth",authRoutes);//classic use of routes
-//for implementing message routes
-app.use("/api/message",messageRoutes);
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/message", messageRoutes);
 
-//make ready for deployment
+// Start backend
+const startServer = async () => {
+  try {
+    await connectDB();
 
-server.listen((PORT),()=>{
-console.log(`Application is runnnig  in ${PORT}`);
-})
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
