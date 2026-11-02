@@ -3,12 +3,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
-
-// Backend URL
-const BASE_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:3000"
-    : import.meta.env.VITE_API_UPL;
+import { socketBaseUrl } from "../lib/axios.js";
 
 export const useAuthStore = create((set, get) => ({
   // State
@@ -29,7 +24,9 @@ export const useAuthStore = create((set, get) => ({
 
       get().connectSocket();
     } catch (error) {
-      console.error("Error in authCheck:", error);
+      if (error.response?.status !== 401) {
+        console.error("Error in authCheck:", error);
+      }
 
       set({ authUser: null });
 
@@ -89,16 +86,6 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-
-      // Disconnect socket first
-      get().disconnectSocket();
-
-      // Clear authentication state
-      set({
-        authUser: null,
-        onlineUsers: [],
-      });
-
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
@@ -106,6 +93,12 @@ export const useAuthStore = create((set, get) => ({
       toast.error(
         error.response?.data?.message || "Error logging out"
       );
+    } finally {
+      get().disconnectSocket();
+      set({
+        authUser: null,
+        onlineUsers: [],
+      });
     }
   },
 
@@ -144,7 +137,7 @@ export const useAuthStore = create((set, get) => ({
       socket.disconnect();
     }
 
-    const newSocket = io(BASE_URL, {
+    const newSocket = io(socketBaseUrl, {
       withCredentials: true,
       transports: ["websocket", "polling"],
     });

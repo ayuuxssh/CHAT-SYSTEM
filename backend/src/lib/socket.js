@@ -6,10 +6,16 @@ import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
 
 const app = express();
 const server = http.createServer(app);
+const configuredClientUrl = process.env.CLIENT_URL;
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  ...(configuredClientUrl ? [configuredClientUrl] : []),
+];
 
 const io = new Server(server,{
     cors:{
-      origin:[process.env.CLIENT_URL],
+      origin: allowedOrigins,
       credentials:true,
     },
 });
@@ -48,4 +54,3 @@ io.on("connection",(socket)=>{
 
 
 export {io,app,server};
-

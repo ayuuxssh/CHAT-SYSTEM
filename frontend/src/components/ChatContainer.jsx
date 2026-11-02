@@ -11,6 +11,10 @@ function ChatContainer() {
   const {authUser} = useAuthStore();
   const messageEndRef = useRef(null);
   useEffect(()=>{
+    if (!selectedUser) {
+      return;
+    }
+
     getMessagesByUserId(selectedUser._id);
     subscribeToMessages();
 

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
-import { MessageCircleIcon, LockIcon, MailIcon, UserIcon, LoaderIcon } from "lucide-react";
+import { MessageCircleIcon, LockIcon, MailIcon, LoaderIcon } from "lucide-react";
 import { Link } from "react-router";
 
 function LogInPage() {
     const [formData, setFormData] = useState({ email: "", password: "" });
-    const {login, isLogIn} = useAuthStore();
+    const { login, isLoggingIn } = useAuthStore();
   
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -64,8 +64,8 @@ function LogInPage() {
                    </div>
  
                    {/* SUBMIT BUTTON */}
-                   <button className="auth-btn" type="submit" disabled={isLogIn}>
-                     {isLogIn ? (
+                   <button className="auth-btn" type="submit" disabled={isLoggingIn}>
+                     {isLoggingIn ? (
                        <LoaderIcon className="w-full h-5 animate-spin text-center" />
                      ) : (
                        "Sign In"

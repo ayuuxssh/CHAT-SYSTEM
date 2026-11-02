@@ -106,6 +106,9 @@ subscribeToMessages:()=>{
     return;
  }
 const socket = useAuthStore.getState().socket;
+if (!socket) {
+    return;
+}
 socket.on("newMessage",(newMessage)=>{
     const isMessageSentFromSelectedUser = newMessage.senderId===selectedUser._id;
     if(!isMessageSentFromSelectedUser)
@@ -125,6 +128,6 @@ if(isSoundEnabled)
 },
 unsubscribeFromMessages:()=>{
     const socket = useAuthStore.getState().socket;
-    socket.off("newMessage");
+    socket?.off("newMessage");
 }
 }))

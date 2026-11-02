@@ -48,3 +48,30 @@ export const protectRoute = async (req, res, next) => {
     });
   }
 };
+
+export const checkAuth = async (req, res, next) => {
+  try {
+    const token = req.cookies?.jwt;
+
+    if (!token) {
+      return res.status(200).json(null);
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select("-password");
+
+    return res.status(200).json(user || null);
+  } catch (error) {
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
+      return res.status(200).json(null);
+    }
+
+    console.error("Check auth error:", error.message);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
